@@ -1,10 +1,16 @@
 # Cardano AnonPass
 
+## Project Links & Demo (Submission Checklist)
+- **Live Demo Link:** [https://cardano-anonpass-demo.vercel.app](https://cardano-anonpass-demo.vercel.app) *(Placeholder)*
+- **Demo Video:** [Watch on YouTube](https://youtube.com) *(Placeholder)*
+- **Preprod Contract Address:** `addr_test1wpep...` *(Placeholder, deploy via `scripts/deploy.ts`)*
+- **Privacy Claim:** Documented below (Users verify age without revealing birth year).
+
 ## Project Overview
 Cardano AnonPass is a decentralized application (dApp) built on the Cardano blockchain. It leverages Zero-Knowledge Proofs (ZKPs) to enable users to verify their identity, credentials, or specific attributes without revealing the underlying sensitive data. This ensures maximum privacy while maintaining trust and compliance.
 
 ## Privacy Claim
-By utilizing advanced Zero-Knowledge (ZK) circuits, Cardano AnonPass guarantees that no sensitive user data is exposed on-chain or off-chain during the verification process. The proofs generated allow smart contracts to validate specific claims deterministically, ensuring that privacy is maintained as a fundamental right.
+By utilizing advanced Zero-Knowledge (ZK) circuits, Cardano AnonPass guarantees that no sensitive user data is exposed on-chain or off-chain during the verification process. Specifically, the application proves that a user is over 18 years old using a Circom circuit without ever revealing the exact birth year in the generated proof. The proofs generated allow smart contracts to validate specific claims deterministically, ensuring that privacy is maintained as a fundamental right.
 
 ## Tech Stack
 - **Frontend**: React (Next.js), Tailwind CSS
