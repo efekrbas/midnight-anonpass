@@ -58,7 +58,7 @@ export default function WalletConnect() {
               <p className="text-[10px] text-zinc-500 mb-2 font-medium uppercase tracking-widest pl-1">Wallet Address</p>
               <div className="bg-black/40 p-4 rounded-2xl border border-white/5 font-mono text-xs break-all text-zinc-300 shadow-inner relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]" />
-                {address ? address : <span className="animate-pulse text-zinc-600">Resolving...</span>}
+                {address ? `${address.slice(0, 12)}...${address.slice(-10)}` : <span className="animate-pulse text-zinc-600">Establishing handshake...</span>}
               </div>
             </div>
             

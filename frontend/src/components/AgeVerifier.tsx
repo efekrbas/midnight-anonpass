@@ -86,13 +86,31 @@ export default function AgeVerifier() {
 
         {proofResult && (
           <div className="mt-8 w-full text-left animate-in fade-in slide-in-from-bottom-4 duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
-            <p className="text-[10px] text-zinc-500 mb-2 font-medium uppercase tracking-widest pl-1">Public Proof</p>
-            <div className="bg-emerald-950/30 p-4 rounded-2xl border border-emerald-500/20 font-mono text-xs break-all shadow-inner text-emerald-400 max-h-32 overflow-y-auto">
-              {JSON.stringify(proofResult.publicSignals, null, 2)}
+            <div className="flex items-center justify-between mb-3">
+               <p className="text-[10px] text-zinc-500 font-medium uppercase tracking-widest pl-1">Cryptographic Proof</p>
+               <div className="flex items-center space-x-1 text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20">
+                 <ShieldCheck size={10} />
+                 <span className="text-[9px] uppercase tracking-wider font-bold">Verified</span>
+               </div>
             </div>
-            <div className="mt-3 flex items-center justify-center space-x-2 bg-white/5 px-3 py-2 rounded-xl border border-white/5">
-              <ShieldCheck size={12} className="text-emerald-500" />
-              <p className="text-[10px] text-zinc-400 font-medium tracking-wide">Birth year cryptographically hidden.</p>
+            
+            <div className="bg-black/40 p-5 rounded-2xl border border-white/5 shadow-inner">
+               <div className="flex flex-col space-y-4">
+                  <div>
+                    <span className="text-[10px] uppercase tracking-widest text-zinc-500 block mb-1">Condition Satisfied</span>
+                    <span className="font-mono text-sm text-emerald-300">{proofResult.publicSignals[0] === "1" ? "True (Age >= 18)" : "False"}</span>
+                  </div>
+                  <div className="w-full h-[1px] bg-white/5" />
+                  <div>
+                    <span className="text-[10px] uppercase tracking-widest text-zinc-500 block mb-1">Verification Context</span>
+                    <span className="font-mono text-sm text-zinc-300">Timestamp: {proofResult.publicSignals[1]}</span>
+                  </div>
+               </div>
+            </div>
+            
+            <div className="mt-4 flex items-center justify-center space-x-2 bg-emerald-500/5 px-3 py-2.5 rounded-xl border border-emerald-500/10">
+              <ShieldCheck size={14} className="text-emerald-500" />
+              <p className="text-[10px] text-emerald-400/80 font-medium tracking-wide">Underlying data is cryptographically obscured.</p>
             </div>
           </div>
         )}

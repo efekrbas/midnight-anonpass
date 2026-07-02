@@ -33,13 +33,13 @@ export default function Home() {
       >
         <motion.div variants={itemVariants} className="flex flex-col items-center text-center max-w-4xl">
           <div className="rounded-full px-4 py-1.5 text-[11px] uppercase tracking-[0.25em] font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 mb-8 backdrop-blur-md">
-            Privacy First Architecture
+            Cryptographic Identity
           </div>
           <h1 className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-8 leading-[1.1]">
-            Zero-Knowledge <br/> Identity.
+            Prove Everything. <br/> Reveal Nothing.
           </h1>
           <p className="text-xl sm:text-2xl text-zinc-400 font-light max-w-2xl mb-24 leading-relaxed">
-            Connect your Lace wallet to securely verify your credentials without ever revealing sensitive data on-chain.
+            A frictionless zero-knowledge gateway. Authenticate your credentials on Cardano without exposing underlying data.
           </p>
         </motion.div>
         
