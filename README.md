@@ -2,7 +2,7 @@
 
 ## Project Links & Demo (Submission Checklist)
 - **Live Demo Link:** [https://cardano-anonpass-demo.vercel.app](https://cardano-anonpass-demo.vercel.app) *(Placeholder)*
-- **Demo Video:** [Watch on YouTube](https://youtube.com) *(Placeholder)*
+- **Demo Video:** [Watch Demo Video](./demovideo.mp4)
 - **Preprod Contract Address:** `addr_test1wp8l7eylksmjas7ypzm0q35dwnjdxxvsfn0z0lflqzgs55stpd682` *(Deployed via `scripts/deploy.ts`)*
 - **Privacy Claim:** Documented below (Users verify age without revealing birth year).
 
