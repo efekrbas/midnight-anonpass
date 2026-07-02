@@ -1,4 +1,5 @@
 // We will use snarkjs in the browser context
+// @ts-ignore
 import * as snarkjs from "snarkjs";
 
 /**
