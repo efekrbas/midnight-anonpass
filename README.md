@@ -9,10 +9,7 @@
 
 ### Demo Video
 
-<video controls width="100%">
-  <source src="./demovideo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+https://github.com/efekrbas/midnight-anonpass/blob/main/demovideo.mp4
 
 
 ## How It Works
