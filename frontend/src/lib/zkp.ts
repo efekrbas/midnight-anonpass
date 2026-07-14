@@ -1,5 +1,5 @@
 import { CompiledContract } from '@midnight-ntwrk/compact-js';
-import { deployContract, submitCallTx } from '@midnight-ntwrk/midnight-js-contracts';
+import { createUnprovenDeployTx, submitTxAsync, submitCallTxAsync } from '@midnight-ntwrk/midnight-js-contracts';
 import { Contract } from './managed/contract';
 import type { ConnectedSession } from './midnight';
 
@@ -14,14 +14,27 @@ export async function deployAgeVerifier(session: ConnectedSession, birthYear: nu
     );
     
     console.log("Deploying AgeVerifier Contract to Midnight Preprod...");
-    const result = await deployContract(session.providers as any, {
-      privateStateId: 'AgeVerifierPrivateState',
-      initialPrivateState: {},
-      compiledContract,
-    } as any);
+    const deployTxData = await (createUnprovenDeployTx as any)(
+      { zkConfigProvider: session.providers.zkConfigProvider, walletProvider: session.providers.walletProvider },
+      { 
+        compiledContract, 
+        args: [], 
+        privateStateId: 'AgeVerifierPrivateState', 
+        initialPrivateState: {}, 
+        signingKey: new Uint8Array(32) 
+      }
+    );
+
+    const contractAddress = deployTxData.public.contractAddress;
+    await (submitTxAsync as any)(session.providers, { unprovenTx: deployTxData.private.unprovenTx });
     
+    // Set private state manually since we used low-level deploy
+    await session.providers.privateStateProvider.setContractAddress(contractAddress);
+    await session.providers.privateStateProvider.set('AgeVerifierPrivateState', {});
+    await session.providers.privateStateProvider.setSigningKey(contractAddress, deployTxData.private.signingKey);
+
     console.log("Contract deployed successfully!");
-    return result.deployTxData.public.contractAddress;
+    return contractAddress;
   } catch (err) {
     console.error("Failed to deploy contract:", err);
     throw err;
@@ -45,12 +58,14 @@ export async function generateAgeProof(
 
     console.log("Submitting ZK Proof to Midnight Network...");
     
-    const result = await submitCallTx(session.providers as any, {
+    const result = await (submitCallTxAsync as any)(session.providers, {
       compiledContract,
       contractAddress,
       circuitId: 'proveAge',
       args: [BigInt(currentYear)],
+      privateStateId: 'AgeVerifierPrivateState'
     });
+    
     console.log("Proof submitted and transaction landed on-chain!");
     return { 
       txHash: result.public.txHash,
