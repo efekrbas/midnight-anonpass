@@ -5,7 +5,7 @@ import type { ConnectedSession } from './midnight';
 
 export async function deployAgeVerifier(session: ConnectedSession, birthYear: number) {
   try {
-    const assetUrl = typeof window !== 'undefined' ? `${window.location.origin}/zk/proveAge` : '/zk/proveAge';
+    const assetUrl = typeof window !== 'undefined' ? `${window.location.origin}/zk` : '/zk';
     const compiledContract = (CompiledContract as any).make('AgeVerifier', Contract).pipe(
       (CompiledContract as any).withWitnesses({
         birthYear: () => BigInt(birthYear)
@@ -35,7 +35,7 @@ export async function generateAgeProof(
   currentYear: number
 ) {
   try {
-    const assetUrl = typeof window !== 'undefined' ? `${window.location.origin}/zk/proveAge` : '/zk/proveAge';
+    const assetUrl = typeof window !== 'undefined' ? `${window.location.origin}/zk` : '/zk';
     const compiledContract = (CompiledContract as any).make('AgeVerifier', Contract).pipe(
       (CompiledContract as any).withWitnesses({
         birthYear: () => BigInt(birthYear)

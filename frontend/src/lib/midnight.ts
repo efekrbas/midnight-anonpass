@@ -29,7 +29,7 @@ export async function createConnectedSession(api: any): Promise<ConnectedSession
   setNetworkId(config.networkId);
 
   const zkConfigProvider = new FetchZkConfigProvider(
-    new URL('/zk/age_verifier', window.location.origin).toString(),
+    new URL('/zk', window.location.origin).toString(),
     window.fetch.bind(window),
   );
 
