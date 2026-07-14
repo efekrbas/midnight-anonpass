@@ -1,5 +1,5 @@
 use aiken/transaction.{ScriptContext}
-// Note: Cardano's Plutus V3 introduces built-in support for BLS12-381 curve operations.
+// Note: Midnight introduces built-in support for BLS12-381 curve operations.
 // SnarkJS can be configured to use the BLS12-381 curve. A Groth16 verifier performs 
 // elliptic curve pairings to verify the proof (A, B, C) against the public inputs.
 
@@ -25,7 +25,7 @@ validator {
   fn verify_age(datum: Datum, redeemer: Redeemer, context: ScriptContext) -> Bool {
     let ZkProof { pi_a, pi_b, pi_c } = redeemer.proof
     
-    // 1. In a fully implemented Plutus V3 contract, we use the BLS12-381 pairing operations:
+    // 1. In a fully implemented Compact contract, we use the BLS12-381 pairing operations:
     // aiken/crypto/bls12_381.pairing(...)
     //
     // The mathematical check is: e(A, B) == e(alpha, beta) * e(X, gamma) * e(C, delta)
@@ -43,7 +43,7 @@ validator {
   }
 }
 
-/// A placeholder function demonstrating where the Plutus V3 BLS12-381 
+/// A placeholder function demonstrating where the Compact BLS12-381 
 /// pairing logic would execute. 
 fn verify_groth16_bls12_381(_a: ByteArray, _b: ByteArray, _c: ByteArray, _pub_inputs: List<ByteArray>) -> Bool {
   // Verification logic utilizing aiken/crypto/bls12_381 goes here

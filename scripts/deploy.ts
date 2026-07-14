@@ -6,7 +6,7 @@ dotenv.config();
 function generateContractAddress() {
   console.log("Generating ZK Verifier Contract Address for Preprod Testnet...");
 
-  // Mock Aiken CBOR
+  // Mock Compact CBOR
   const scriptCbor = "4e4d01000033222220051200120011"; 
   const script = {
     code: scriptCbor,

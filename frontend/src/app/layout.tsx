@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cardano AnonPass",
+  title: "Midnight AnonPass",
   description: "ZK-based identity dApp",
 };
 

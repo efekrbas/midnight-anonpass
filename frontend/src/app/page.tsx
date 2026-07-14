@@ -39,7 +39,7 @@ export default function Home() {
             Prove Everything. <br/> Reveal Nothing.
           </h1>
           <p className="text-xl sm:text-2xl text-zinc-400 font-light max-w-2xl mb-24 leading-relaxed">
-            A frictionless zero-knowledge gateway. Authenticate your credentials on Cardano without exposing underlying data.
+            A frictionless zero-knowledge gateway. Authenticate your credentials on Midnight without exposing underlying data.
           </p>
         </motion.div>
         

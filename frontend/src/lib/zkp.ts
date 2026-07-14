@@ -61,7 +61,7 @@ export async function generateAgeProof(birthYear: number, currentYear: number) {
 /**
  * Verifies the generated proof locally.
  * In a real dApp, you would submit `proof` and `publicSignals` to a smart contract
- * (e.g., Aiken or Plutus on Cardano) for on-chain verification.
+ * (e.g., Compact on Midnight) for on-chain verification.
  * 
  * @param proof - The proof object generated
  * @param publicSignals - The public signals array
