@@ -1,7 +1,0 @@
-FROM ubuntu:latest
-RUN apt-get update && apt-get install -y curl xz-utils tar gzip unzip
-RUN curl --proto '=https' --tlsv1.2 -LsSf https://github.com/midnightntwrk/compact/releases/latest/download/compact-installer.sh | sh
-ENV PATH="/root/.local/bin:${PATH}"
-RUN compact update
-WORKDIR /app
-CMD ["sh", "-c", "mkdir -p /out && compact compile /contracts/age_verifier.compact /out/"]

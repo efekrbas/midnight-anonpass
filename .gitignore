@@ -3,3 +3,8 @@ node_modules/
 gen.ts
 .next/
 dist/
+.agents/
+skills-lock.json
+installer.sh
+Dockerfile.compiler
+circuits/
