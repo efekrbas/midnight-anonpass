@@ -14,14 +14,13 @@ export async function deployAgeVerifier(session: ConnectedSession, birthYear: nu
     );
     
     console.log("Deploying AgeVerifier Contract to Midnight Preprod...");
+    const { sampleSigningKey } = await import('@midnight-ntwrk/ledger-v8');
     const deployTxData = await (createUnprovenDeployTx as any)(
       { zkConfigProvider: session.providers.zkConfigProvider, walletProvider: session.providers.walletProvider },
       { 
         compiledContract, 
         args: [], 
-        privateStateId: 'AgeVerifierPrivateState', 
-        initialPrivateState: {}, 
-        signingKey: new Uint8Array(32) 
+        signingKey: sampleSigningKey() 
       }
     );
 
@@ -30,13 +29,15 @@ export async function deployAgeVerifier(session: ConnectedSession, birthYear: nu
     
     // Set private state manually since we used low-level deploy
     await session.providers.privateStateProvider.setContractAddress(contractAddress);
-    await session.providers.privateStateProvider.set('AgeVerifierPrivateState', {});
     await session.providers.privateStateProvider.setSigningKey(contractAddress, deployTxData.private.signingKey);
 
     console.log("Contract deployed successfully!");
     return contractAddress;
-  } catch (err) {
+  } catch (err: any) {
     console.error("Failed to deploy contract:", err);
+    if (typeof err === 'object' && err !== null && Object.keys(err).length === 0) {
+      console.error("Error is an empty object, possibly a WASM Exception.");
+    }
     throw err;
   }
 }
@@ -63,13 +64,12 @@ export async function generateAgeProof(
       contractAddress,
       circuitId: 'proveAge',
       args: [BigInt(currentYear)],
-      privateStateId: 'AgeVerifierPrivateState'
     });
     
     console.log("Proof submitted and transaction landed on-chain!");
     return { 
-      txHash: result.public.txHash,
-      blockHeight: result.public.blockHeight 
+      txHash: result.txId || 'unknown',
+      blockHeight: 0 
     };
   } catch (error) {
     console.error("Error generating ZK proof:", error);
