@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../contracts/",
+  "sources": ["age_verifier.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAMA;;;;;;;;;;;;;MAIA,AAAA,QAKC;;;;;cALuB,aAAqB;;;;;;;;;;;;;;;;;;yCAArB,aAAqB;;;;;;;;;0CAArB,aAAqB;;;OAK5C;;;;GAPA;EAFD;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAJA;;;;;;;;;yEAA2C;UAKzC,KAAkB;IAAlB;;;;;;;2HAAA,KAAkB;;yEAAA;;;;;;;GACnB;EAJD,AAAA,YAA8B;;0DAA9B,SAA8B;;;;;;;;;;;;;;GAAA;EAM9B,AAAA,WAKC,4BALuB,aAAqB;UACrC,IAAgB;4BACf,aAAW,IAAI,IAAE;;QACjB,GAAsB;4DAAtB,aAAW;;4DAAG,IAAE;;oCAAhB,aAAW,GAAG,IAAE;6BAAhB,GAAsB;;UAC7B,KAAkB;;;;;6CAAa;;;;;;;;;;;kHAAkB;;;IAAjD;;;;;;;2HAAA,KAAkB;;yEAAA;;GACnB;;;;;;;;;;;;;;;;IAbD;qCAAA;;;;;;;;;;;0GAA2C;KAAA;;;;;;;;;;"
+}
