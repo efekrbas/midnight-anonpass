@@ -3,9 +3,13 @@
 > Zero-Knowledge Age Verification on the Midnight Network — prove you're 18+ without revealing your birth year.
 
 ## Project Links & Demo
-- **Demo Video:** [Watch Demo Video](./demovideo.mp4)
+- **Live Demo:** [https://anonpass.vercel.app](https://anonpass.vercel.app) *(Deploying)*
 - **Network:** Midnight Preprod
 - **Privacy Claim:** Users verify age on-chain without revealing their birth year. The ZK circuit mathematically proves `currentYear - birthYear >= 18` while the birth year remains hidden inside the proof — never disclosed to the blockchain or any third party.
+
+### Demo Video
+https://github.com/efekrbas/cardano-anonpass/raw/main/demovideo.mp4
+
 
 ## How It Works
 
