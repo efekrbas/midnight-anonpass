@@ -3,25 +3,21 @@ import { createUnprovenDeployTx, submitTxAsync, submitCallTxAsync } from '@midni
 import { Contract } from './managed/contract';
 import type { ConnectedSession } from './midnight';
 
-let baseCompiledContract: any = null;
-function getBaseCompiledContract() {
-  if (!baseCompiledContract) {
-    const assetUrl = typeof window !== 'undefined' ? `${window.location.origin}/zk` : '/zk';
-    baseCompiledContract = (CompiledContract as any).make('AgeVerifier', Contract).pipe(
-      (CompiledContract as any).withCompiledFileAssets(assetUrl)
-    );
-  }
-  return baseCompiledContract;
+function buildCompiledContract(birthYear: number) {
+  const assetUrl = typeof window !== 'undefined' ? `${window.location.origin}/zk` : '/zk';
+  return (CompiledContract as any).make('AgeVerifier', Contract).pipe(
+    (CompiledContract as any).withWitnesses({
+      birthYear: (context: any) => [context.privateState, BigInt(birthYear)]
+    }),
+    (CompiledContract as any).withCompiledFileAssets(assetUrl)
+  );
 }
 
 export async function deployAgeVerifier(session: ConnectedSession, birthYear: number) {
   let compiledContract;
   
   try {
-    const withWitnessesFn = (CompiledContract as any).withWitnesses({
-      birthYear: (context: any) => [context.privateState, BigInt(birthYear)]
-    });
-    compiledContract = withWitnessesFn(getBaseCompiledContract());
+    compiledContract = buildCompiledContract(birthYear);
   } catch (err) {
     throw new Error(`Step 1 (Compile) failed: ${String(err)}`);
   }
@@ -46,18 +42,18 @@ export async function deployAgeVerifier(session: ConnectedSession, birthYear: nu
     );
   } catch (err: any) {
     console.error("createUnprovenDeployTx error:", err);
-    throw new Error(`Step 3 (createUnprovenDeployTx) failed: ${err?.message || err?.name || String(err)} - Check ZK Asset URLs or Lace permissions`);
+    throw new Error(`Step 3 (createUnprovenDeployTx) failed: ${err?.message || err?.name || String(err)}`);
   }
 
   const contractAddress = deployTxData.public.contractAddress;
 
   let provenTx;
   try {
-    console.log("Step 4.1: Proving Tx via Wallet ZK Prover...");
+    console.log("Step 4.1: Proving Tx via Proof Server...");
     provenTx = await session.providers.proofProvider.proveTx(deployTxData.private.unprovenTx, undefined);
   } catch (err: any) {
     console.error("proveTx error:", err);
-    throw new Error(`Step 4.1 (Prove Tx) failed: ${err?.message || err?.name || String(err)} - Lace ZK Prover crashed. Try refreshing or check ZK assets.`);
+    throw new Error(`Step 4.1 (Prove Tx) failed: ${err?.message || err?.name || String(err)}`);
   }
 
   let balancedTx;
@@ -68,10 +64,8 @@ export async function deployAgeVerifier(session: ConnectedSession, birthYear: nu
     console.error("balanceTx error:", err);
     if (err.cause?.failure) {
       console.error("FIBER FAILURE DETAILS:", JSON.stringify(err.cause.failure, null, 2));
-    } else {
-      console.error("ERROR CAUSE:", err.cause);
     }
-    throw new Error(`Step 4.2 (Balance Tx) failed: ${err?.message || err?.name || String(err)} - Check console for FIBER FAILURE DETAILS.`);
+    throw new Error(`Step 4.2 (Balance Tx) failed: ${err?.message || err?.name || String(err)}`);
   }
 
   try {
@@ -79,7 +73,7 @@ export async function deployAgeVerifier(session: ConnectedSession, birthYear: nu
     await session.providers.midnightProvider.submitTx(balancedTx);
   } catch (err: any) {
     console.error("submitTx error:", err);
-    throw new Error(`Step 4.3 (Submit Tx) failed: ${err?.message || err?.name || String(err)} - Blockchain rejected transaction.`);
+    throw new Error(`Step 4.3 (Submit Tx) failed: ${err?.message || err?.name || String(err)}`);
   }
 
   try {
@@ -110,10 +104,7 @@ export async function generateAgeProof(
   currentYear: number
 ) {
   try {
-    const withWitnessesFn = (CompiledContract as any).withWitnesses({
-      birthYear: (context: any) => [context.privateState, BigInt(birthYear)]
-    });
-    const compiledContract = withWitnessesFn(getBaseCompiledContract());
+    const compiledContract = buildCompiledContract(birthYear);
 
     console.log("Submitting ZK Proof to Midnight Network...");
     
@@ -134,3 +125,4 @@ export async function generateAgeProof(
     throw error;
   }
 }
+
