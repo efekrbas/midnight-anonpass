@@ -5,11 +5,12 @@ import type { ConnectedSession } from './midnight';
 
 export async function deployAgeVerifier(session: ConnectedSession, birthYear: number) {
   try {
+    const assetUrl = typeof window !== 'undefined' ? `${window.location.origin}/zk/proveAge` : '/zk/proveAge';
     const compiledContract = (CompiledContract as any).make('AgeVerifier', Contract).pipe(
       (CompiledContract as any).withWitnesses({
         birthYear: () => BigInt(birthYear)
       }),
-      (CompiledContract as any).withCompiledFileAssets('/zk/proveAge')
+      (CompiledContract as any).withCompiledFileAssets(assetUrl)
     );
     
     console.log("Deploying AgeVerifier Contract to Midnight Preprod...");
@@ -34,11 +35,12 @@ export async function generateAgeProof(
   currentYear: number
 ) {
   try {
+    const assetUrl = typeof window !== 'undefined' ? `${window.location.origin}/zk/proveAge` : '/zk/proveAge';
     const compiledContract = (CompiledContract as any).make('AgeVerifier', Contract).pipe(
       (CompiledContract as any).withWitnesses({
         birthYear: () => BigInt(birthYear)
       }),
-      (CompiledContract as any).withCompiledFileAssets('/zk/proveAge')
+      (CompiledContract as any).withCompiledFileAssets(assetUrl)
     );
 
     console.log("Submitting ZK Proof to Midnight Network...");
