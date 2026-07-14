@@ -14,10 +14,10 @@ export async function deployAgeVerifier(session: ConnectedSession, birthYear: nu
     
     console.log("Deploying AgeVerifier Contract to Midnight Preprod...");
     const result = await deployContract(session.providers as any, {
-      privateState: {},
+      privateStateId: 'AgeVerifierPrivateState',
+      initialPrivateState: {},
       compiledContract,
-      initialState: {} // if no args needed
-    });
+    } as any);
     
     console.log("Contract deployed successfully!");
     return result.deployTxData.public.contractAddress;
