@@ -33,7 +33,8 @@ export async function createConnectedSession(api: any): Promise<ConnectedSession
     window.fetch.bind(window),
   );
 
-  const provingProvider = await api.getProvingProvider(zkConfigProvider);
+  const { httpClientProvingProvider } = await import('@midnight-ntwrk/midnight-js-http-client-proof-provider');
+  const provingProvider = httpClientProvingProvider('http://127.0.0.1:6300', zkConfigProvider);
 
   const proofProvider = {
     async proveTx(unprovenTx: any, _config: any) {
