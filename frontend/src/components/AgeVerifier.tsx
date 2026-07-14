@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { generateAgeProof, deployAgeVerifier } from "../lib/zkp";
-import { ShieldCheck, Loader2, Sparkles, UploadCloud } from "lucide-react";
+import { ShieldCheck, Loader2, Sparkles, UploadCloud, CheckCircle2 } from "lucide-react";
 import { useWallet } from "../contexts/WalletContext";
 
 export default function AgeVerifier() {
@@ -24,12 +24,16 @@ export default function AgeVerifier() {
     setDeploying(true);
     setError(null);
     try {
-      // Use 1990 as default birthYear for deployment witness
       const address = await deployAgeVerifier(session, 1990);
       setContractAddress(address);
       localStorage.setItem('midnight_contract_address', address);
     } catch (err: any) {
-      setError("Deployment failed: " + (err.message || String(err)));
+      const msg = err.message || String(err);
+      if (msg.includes("User rejected")) {
+        setError("Deployment cancelled in wallet.");
+      } else {
+        setError("Deployment failed. Make sure you have DUST on Preprod.");
+      }
     } finally {
       setDeploying(false);
     }
@@ -61,7 +65,14 @@ export default function AgeVerifier() {
       const result = await generateAgeProof(session, contractAddress, yearNum, currentYear);
       setProofResult(result);
     } catch (err: any) {
-      setError(err.message || "Failed to generate proof.");
+      const msg = err.message || String(err);
+      if (msg.includes("18 years old")) {
+        setError("ZK Circuit rejected: You must be at least 18 years old.");
+      } else if (msg.includes("User rejected")) {
+        setError("Transaction cancelled in wallet.");
+      } else {
+        setError("Failed to generate ZK proof. Check your connection or balance.");
+      }
     } finally {
       setLoading(false);
     }
@@ -79,23 +90,26 @@ export default function AgeVerifier() {
         </div>
 
         {contractAddress ? (
-          <div className="w-full mb-6 p-3 bg-white/5 border border-white/10 rounded-xl">
-            <p className="text-[9px] uppercase tracking-widest text-zinc-500 mb-1">Contract Address</p>
-            <p className="font-mono text-xs text-zinc-300 truncate">{contractAddress}</p>
+          <div className="w-full mb-6 p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl flex items-start space-x-3">
+            <CheckCircle2 size={18} className="text-emerald-500 mt-0.5 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] uppercase tracking-widest text-emerald-500/80 mb-1 font-semibold">Contract Deployed</p>
+              <p className="font-mono text-xs text-zinc-300 truncate">{contractAddress}</p>
+            </div>
           </div>
         ) : (
           <button
             onClick={handleDeploy}
             disabled={deploying || !isConnected}
-            className="w-full mb-6 py-3 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-white rounded-xl font-medium flex items-center justify-center space-x-2 border border-white/10 transition-colors"
+            className="w-full mb-6 py-4 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-white rounded-2xl font-medium flex items-center justify-center space-x-3 border border-white/10 transition-colors shadow-sm"
           >
-            {deploying ? <Loader2 size={16} className="animate-spin" /> : <UploadCloud size={16} />}
-            <span>{deploying ? "Deploying via Lace..." : "Deploy Smart Contract"}</span>
+            {deploying ? <Loader2 size={16} className="animate-spin text-zinc-400" /> : <UploadCloud size={16} className="text-zinc-400" />}
+            <span className="tracking-wide">{deploying ? "Deploying via Lace..." : "Deploy ZK Contract"}</span>
           </button>
         )}
 
         <div className="w-full mb-6 relative group">
-          <label className="block text-[10px] font-medium uppercase tracking-widest text-zinc-500 mb-2 pl-1">Birth Year (Private)</label>
+          <label className="block text-[10px] font-medium uppercase tracking-widest text-zinc-500 mb-2 pl-1">Birth Year (Kept Private)</label>
           <div className="relative">
             <input 
               type="number" 
@@ -116,11 +130,11 @@ export default function AgeVerifier() {
           {loading ? (
              <div className="flex items-center justify-center w-full space-x-2">
                <Loader2 size={18} className="animate-spin text-black/50" />
-               <span className="text-black/70">Generating...</span>
+               <span className="text-black/70">Proving...</span>
              </div>
           ) : (
             <>
-              <span className="pl-2">{isConnected ? "Verify Age" : "Connect Wallet First"}</span>
+              <span className="pl-2 tracking-wide">{isConnected ? "Verify Age" : "Connect Wallet First"}</span>
               <div className="w-8 h-8 rounded-full bg-black/10 flex items-center justify-center smooth-spring group-hover:bg-black/20">
                 <Sparkles size={16} className="smooth-spring group-hover:scale-110 group-hover:rotate-12" />
               </div>
@@ -148,7 +162,7 @@ export default function AgeVerifier() {
                <div className="flex flex-col space-y-4">
                   <div>
                     <span className="text-[10px] uppercase tracking-widest text-zinc-500 block mb-1">Transaction Hash</span>
-                    <span className="font-mono text-sm text-emerald-300 truncate block">{proofResult.txHash}</span>
+                    <span className="font-mono text-sm text-emerald-300 break-all block">{proofResult.txHash}</span>
                   </div>
                </div>
             </div>
