@@ -8,7 +8,11 @@
 - **Privacy Claim:** Users verify age on-chain without revealing their birth year. The ZK circuit mathematically proves `currentYear - birthYear >= 18` while the birth year remains hidden inside the proof — never disclosed to the blockchain or any third party.
 
 ### Demo Video
-<video src="https://github.com/efekrbas/cardano-anonpass/raw/main/demovideo.mp4" controls="controls" muted="muted" width="100%"></video>
+
+<video controls width="100%">
+  <source src="./demovideo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 
 ## How It Works
